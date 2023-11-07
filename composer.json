@@ -1,0 +1,24 @@
+{
+    "name": "jthijssen/acme-client",
+    "autoload": {
+        "psr-4": {
+            "Jthijssen\\AcmeClient\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Joshua Thijssen",
+            "email": "jthijssen@noxlogic.nl"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.8",
+        "ext-sodium": "*",
+        "ext-openssl": "*",
+        "web-token/jwt-signature": "^3.2",
+        "web-token/jwt-core": "^3.2",
+        "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
+        "web-token/jwt-key-mgmt": "^3.2"
+    }
+}
