@@ -1,6 +1,6 @@
 <?php
 
-namespace Jthijssen\AcmeClient;
+namespace NoxLogic\Acme;
 
 class Base64
 {

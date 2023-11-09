@@ -1,8 +1,9 @@
 {
-    "name": "jthijssen/acme-client",
+    "name": "noxlogic/acme-client",
     "autoload": {
         "psr-4": {
-            "Jthijssen\\AcmeClient\\": "src/"
+            "NoxLogic\\App\\": "src/App",
+            "NoxLogic\\Acme\\": "src/Acme"
         }
     },
     "authors": [
@@ -19,6 +20,7 @@
         "web-token/jwt-signature": "^3.2",
         "web-token/jwt-core": "^3.2",
         "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
-        "web-token/jwt-key-mgmt": "^3.2"
+        "web-token/jwt-key-mgmt": "^3.2",
+        "symfony/console": "^6.3"
     }
 }
