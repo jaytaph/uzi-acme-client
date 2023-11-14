@@ -2,23 +2,25 @@
 
 namespace NoxLogic\App\Command;
 
+use GuzzleHttp\Exception\ClientException;
 use NoxLogic\Acme\Client;
 use NoxLogic\Acme\Exception\AccountNotFoundException;
-use NoxLogic\App\Helper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ViewAccountCommand extends AcmeCommand {
+class AuthViewCommand extends AcmeCommand {
 
-    protected static $defaultName = 'account:view';
+    protected static $defaultName = 'auth:view';
 
     protected function configure(): void {
-        $this->setDescription('View account details');
-        $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Account email');
-
         parent::configure();
+
+        $this->setDescription('View authorization details');
+
+        $this->addOption('url', '', InputOption::VALUE_REQUIRED, 'URL of auth');
+        $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'email');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
@@ -28,16 +30,15 @@ class ViewAccountCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        try {
-            $acme = Client::createFromInput($input);
-            $data = $acme->viewAccount($email);
-        } catch (AccountNotFoundException) {
-            $output->writeln('<error>Account not found</error>');
+        if (empty($input->getOption('url'))) {
+            $output->writeln('<error>URL is required</error>');
             return Command::FAILURE;
         }
 
-        $helper = new Helper();
-        $helper->printUserInfo($email, $data, $output);
+        $acme = Client::createFromInput($input);
+        $data = $acme->viewAuth($email, $input->getOption('url'));
+
+        print_r($data);
 
         return Command::SUCCESS;
     }
