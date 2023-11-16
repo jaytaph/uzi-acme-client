@@ -11,9 +11,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OrderListCommand extends AcmeCommand {
+class OrderFinalizeCommand extends AcmeCommand {
 
-    protected static $defaultName = 'order:list';
+    protected static $defaultName = 'order:finalize';
 
     protected function configure(): void {
         parent::configure();
@@ -21,6 +21,7 @@ class OrderListCommand extends AcmeCommand {
         $this->setDescription('View orders');
 
         $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Account email');
+        $this->addOption('url', '', InputOption::VALUE_REQUIRED, 'Finalize url of order');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
@@ -32,7 +33,7 @@ class OrderListCommand extends AcmeCommand {
 
         try {
             $acme = Client::createFromInput($input);
-            $data = $acme->orderList($email, $input->getOption('identifiers'));
+            $data = $acme->orderFinalize($email, $input->getOption('url'));
         } catch (AccountNotFoundException) {
             $output->writeln('<error>Account not found</error>');
 
@@ -40,30 +41,11 @@ class OrderListCommand extends AcmeCommand {
         } catch (ClientException $e) {
             var_dump($e->getResponse()->getBody()->getContents());
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
             $output->writeln('<error>Generic exception: ' . $e->getMessage() . '</error>');
             return Command::FAILURE;
         }
 
-        $output->writeln("A new order has been created.");
-        $table = new Table($output);
-        $table->setHeaders([
-            'Location',
-            'Status',
-            'Expires',
-            'Authorization URLs',
-            'Finalize URL'
-        ]);
-
-        $table->addRow([
-            "unknown",
-            $data['status'],
-            $data['expires'],
-            print_r($data['authorizations'], true),
-            $data['finalize']
-        ]);
-        $table->setVertical(true);
-        $table->render();
+        print_r($data);
 
         return Command::SUCCESS;
     }

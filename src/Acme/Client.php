@@ -129,22 +129,15 @@ class Client {
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function jwtUpload(string $contact, string $url, string $jwt)
+    public function orderFinalize(string $contact, string $url)
     {
-        // Since the "jwt" option does not have a active way to check for acme tokens, we need somehow to
-        // make it the acme server known where it can find this token. Normally, a ./well-known/acme-challenge
-        // would do in case of HTTP verification, but we cannot do this.
-        //
-        // Instead, we upload the JWT token into the order and ask for validation. This will trigger the
-        // acme server to fetch the token from the order and validate it.
-
         $account = $this->accountStore->loadAccount($contact);
         if (!$account) {
             throw new AccountNotFoundException("Account not found");
         }
 
         $payload = [
-            'jwt' => $jwt
+            'csr' => 'fooobar',
         ];
 
         $json = $this->createJsonForUrl($account, $url, $payload);
@@ -201,6 +194,17 @@ class Client {
             ],
             'body' => $json,
         ]);
+
+        $url = $response->getHeader('Location')[0];
+        $json = $this->createJsonForUrl($account, $url, []);
+        $response = $this->client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/jose+json',
+            ],
+            'body' => $json,
+        ]);
+
+        print_r($response->getStatusCode());
 
         return json_decode($response->getBody()->getContents(), true);
     }
