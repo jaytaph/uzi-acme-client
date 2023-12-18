@@ -129,7 +129,7 @@ class Client {
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function orderFinalize(string $contact, string $url)
+    public function orderFinalize(string $contact, string $url, string $csr)
     {
         $account = $this->accountStore->loadAccount($contact);
         if (!$account) {
@@ -137,10 +137,28 @@ class Client {
         }
 
         $payload = [
-            'csr' => 'fooobar',
+            'csr' => $csr,
         ];
 
         $json = $this->createJsonForUrl($account, $url, $payload);
+        $response = $this->client->post($url, [
+            'headers' => [
+                'Content-Type' => 'application/jose+json',
+            ],
+            'body' => $json,
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function orderView(string $contact, string $url)
+    {
+        $account = $this->accountStore->loadAccount($contact);
+        if (!$account) {
+            throw new AccountNotFoundException("Account not found");
+        }
+
+        $json = $this->createJsonForUrl($account, $url, []);
         $response = $this->client->post($url, [
             'headers' => [
                 'Content-Type' => 'application/jose+json',
