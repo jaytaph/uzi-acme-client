@@ -24,6 +24,7 @@ class OrderFinalizeCommand extends AcmeCommand {
         $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Account email');
         $this->addOption('url', '', InputOption::VALUE_REQUIRED, 'Finalize url of order');
         $this->addOption('cert-file', 'c', InputOption::VALUE_REQUIRED, 'CSR cert file in DER format');
+        $this->addOption('f9-file', 'f', InputOption::VALUE_REQUIRED, 'F9 cert file in DER format');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {

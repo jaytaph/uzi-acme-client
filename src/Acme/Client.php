@@ -53,6 +53,7 @@ class Client {
         $response = $this->client->head($url);
 
         $nonce = $response->getHeader('Replay-Nonce')[0];
+        print_r($nonce);
         return $nonce;
     }
 
@@ -109,11 +110,29 @@ class Client {
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function acceptChallenge(string $contact, string $url, string $token, string $cert): array
+    public function acceptChallenge(string $contact, string $url, string $token, string $cert, string $f9cert): array
     {
         $account = $this->accountStore->loadAccount($contact);
         if (!$account) {
             throw new AccountNotFoundException("Account not found");
+        }
+
+        if ($token[0] == '@') {
+            $token = file_get_contents(substr($token, 1));
+            $token = str_replace("\n", "", $token);
+            $token = str_replace(" ", "", $token);
+        }
+        if ($cert[0] == '@') {
+            $cert = file_get_contents(substr($cert, 1));
+            $cert = str_replace("-----END CERTIFICATE-----", "", $cert);
+            $cert = str_replace("-----BEGIN CERTIFICATE-----", "", $cert);
+            $cert = str_replace("\n", "", $cert);
+        }
+        if ($f9cert[0] == '@') {
+            $f9cert = file_get_contents(substr($f9cert, 1));
+            $f9cert = str_replace("-----END CERTIFICATE-----", "", $f9cert);
+            $f9cert = str_replace("-----BEGIN CERTIFICATE-----", "", $f9cert);
+            $f9cert = str_replace("\n", "", $f9cert);
         }
 
         $json = $this->createJsonForUrl($account, $url, [], encodeEmptyPayload: true);
@@ -122,6 +141,7 @@ class Client {
                 'Content-Type' => 'application/jose+json',
                 'X-Acme-Jwt' => $token,
                 'X-Acme-Cert' => $cert,
+                'X-Acme-F9Cert' => $f9cert,
             ],
             'body' => $json,
         ]);
@@ -290,6 +310,8 @@ class Client {
 
         $manager = new AlgorithmManager([new ES256()]);
 
+        var_dump($payload);
+
         if (count($payload)) {
             $payload = json_encode($payload);
         } else {
@@ -301,7 +323,7 @@ class Client {
             }
         }
 
-        var_dump($payload);
+//        var_dump($payload);
 
         $jwsBuilder = new JWSBuilder($manager);
         $jws = $jwsBuilder

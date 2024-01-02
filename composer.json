@@ -21,6 +21,7 @@
         "web-token/jwt-core": "^3.2",
         "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
         "web-token/jwt-key-mgmt": "^3.2",
-        "symfony/console": "^6.3"
+        "symfony/console": "^6.3",
+        "lcobucci/jwt": "^5.2"
     }
 }

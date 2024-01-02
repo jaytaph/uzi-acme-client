@@ -23,6 +23,7 @@ class AuthAcceptCommand extends AcmeCommand {
         $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'email');
         $this->addOption('token', 't', InputOption::VALUE_REQUIRED, 'token');
         $this->addOption('cert', 'c', InputOption::VALUE_REQUIRED, 'cert');
+        $this->addOption('f9cert', 'f', InputOption::VALUE_REQUIRED, 'f9cert');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
@@ -43,6 +44,7 @@ class AuthAcceptCommand extends AcmeCommand {
             $input->getOption('url'),
             $input->getOption('token'),
             $input->getOption('cert'),
+            $input->getOption('f9cert'),
         );
 
         print_r($data);
