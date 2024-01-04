@@ -21,9 +21,9 @@ class AuthAcceptCommand extends AcmeCommand {
 
         $this->addOption('url', '', InputOption::VALUE_REQUIRED, 'URL of auth');
         $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'email');
-        $this->addOption('token', 't', InputOption::VALUE_REQUIRED, 'token');
-        $this->addOption('cert', 'c', InputOption::VALUE_REQUIRED, 'cert');
-        $this->addOption('f9cert', 'f', InputOption::VALUE_REQUIRED, 'f9cert');
+        $this->addOption('token', '', InputOption::VALUE_REQUIRED, 'token');
+        $this->addOption('cert', '', InputOption::VALUE_REQUIRED, 'cert');
+        $this->addOption('f9cert', '', InputOption::VALUE_REQUIRED, 'f9cert');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {

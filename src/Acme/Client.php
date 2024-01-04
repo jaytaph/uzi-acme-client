@@ -52,9 +52,7 @@ class Client {
         $url = $this->directory->getEntry(Directory::NEW_NONCE);
         $response = $this->client->head($url);
 
-        $nonce = $response->getHeader('Replay-Nonce')[0];
-        print_r($nonce);
-        return $nonce;
+        return $response->getHeader('Replay-Nonce')[0];
     }
 
     public function newAccount(string $contact, bool $tosAgreed): array
@@ -136,12 +134,14 @@ class Client {
         }
 
         $json = $this->createJsonForUrl($account, $url, [], encodeEmptyPayload: true);
+        var_dump($json);
         $response = $this->client->post($url, [
+            'debug' => true,
             'headers' => [
-                'Content-Type' => 'application/jose+json',
                 'X-Acme-Jwt' => $token,
                 'X-Acme-Cert' => $cert,
                 'X-Acme-F9Cert' => $f9cert,
+                'Content-Type' => 'application/jose+json',
             ],
             'body' => $json,
         ]);
@@ -310,8 +310,6 @@ class Client {
 
         $manager = new AlgorithmManager([new ES256()]);
 
-        var_dump($payload);
-
         if (count($payload)) {
             $payload = json_encode($payload);
         } else {
@@ -322,8 +320,6 @@ class Client {
                 $payload = "";
             }
         }
-
-//        var_dump($payload);
 
         $jwsBuilder = new JWSBuilder($manager);
         $jws = $jwsBuilder

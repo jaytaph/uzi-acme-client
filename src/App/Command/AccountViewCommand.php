@@ -36,8 +36,6 @@ class AccountViewCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        var_dump($data);
-
         $helper = new Helper();
         $helper->printUserInfo($email, $data, $output);
 
