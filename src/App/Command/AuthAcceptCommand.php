@@ -47,7 +47,7 @@ class AuthAcceptCommand extends AcmeCommand {
             $input->getOption('f9cert'),
         );
 
-        print_r($data);
+        print json_encode($data, JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }

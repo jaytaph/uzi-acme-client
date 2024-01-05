@@ -23,8 +23,7 @@ class OrderFinalizeCommand extends AcmeCommand {
 
         $this->addOption('email', 'e', InputOption::VALUE_REQUIRED, 'Account email');
         $this->addOption('url', '', InputOption::VALUE_REQUIRED, 'Finalize url of order');
-        $this->addOption('cert-file', 'c', InputOption::VALUE_REQUIRED, 'CSR cert file in DER format');
-        $this->addOption('f9-file', 'f', InputOption::VALUE_REQUIRED, 'F9 cert file in DER format');
+        $this->addOption('csr-cert-file', 'c', InputOption::VALUE_REQUIRED, 'CSR cert file in DER format');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int {
@@ -34,12 +33,12 @@ class OrderFinalizeCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        $cert = file_get_contents($input->getOption('cert-file'));
-        $cert = Base64::encode($cert);
+        $csrCert = file_get_contents($input->getOption('csr-cert-file'));
+        $csrCert = Base64::encode($csrCert);
 
         try {
             $acme = Client::createFromInput($input);
-            $data = $acme->orderFinalize($email, $input->getOption('url'), $cert);
+            $data = $acme->orderFinalize($email, $input->getOption('url'), $csrCert);
         } catch (AccountNotFoundException) {
             $output->writeln('<error>Account not found</error>');
 
@@ -51,7 +50,7 @@ class OrderFinalizeCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        print_r($data);
+        print json_encode($data, JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }

@@ -134,9 +134,7 @@ class Client {
         }
 
         $json = $this->createJsonForUrl($account, $url, [], encodeEmptyPayload: true);
-        var_dump($json);
         $response = $this->client->post($url, [
-            'debug' => true,
             'headers' => [
                 'X-Acme-Jwt' => $token,
                 'X-Acme-Cert' => $cert,

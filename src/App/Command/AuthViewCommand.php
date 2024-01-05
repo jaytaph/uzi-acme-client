@@ -38,7 +38,7 @@ class AuthViewCommand extends AcmeCommand {
         $acme = Client::createFromInput($input);
         $data = $acme->viewAuth($email, $input->getOption('url'));
 
-        print_r($data);
+        print json_encode($data, JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }

@@ -46,7 +46,7 @@ class OrderViewCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        print_r($data);
+        print json_encode($data, JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }

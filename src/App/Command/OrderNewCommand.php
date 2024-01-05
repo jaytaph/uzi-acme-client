@@ -46,26 +46,29 @@ class OrderNewCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        $output->writeln("A new order has been created.");
-        $table = new Table($output);
-        $table->setHeaders([
-            'Location',
-            'Status',
-            'Expires',
-            'Authorization URLs',
-            'Finalize URL'
-        ]);
-
-        $table->addRow([
-            $location,
-            $data['status'],
-            $data['expires'],
-            print_r($data['authorizations'], true),
-            $data['finalize']
-        ]);
-        $table->setVertical(true);
-        $table->render();
-
+        print json_encode($data, JSON_PRETTY_PRINT);
         return Command::SUCCESS;
+
+//        $output->writeln("A new order has been created.");
+//        $table = new Table($output);
+//        $table->setHeaders([
+//            'Location',
+//            'Status',
+//            'Expires',
+//            'Authorization URLs',
+//            'Finalize URL'
+//        ]);
+//
+//        $table->addRow([
+//            $location,
+//            $data['status'],
+//            $data['expires'],
+//            print_r($data['authorizations'], true),
+//            $data['finalize']
+//        ]);
+//        $table->setVertical(true);
+//        $table->render();
+//
+//        return Command::SUCCESS;
     }
 }

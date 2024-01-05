@@ -39,10 +39,11 @@ class AccountNewCommand extends AcmeCommand {
             return Command::FAILURE;
         }
 
-        print_r($data);
-
-        $helper = new Helper();
-        $helper->printUserInfo($email, $data, $output);
+        print json_encode($data, JSON_PRETTY_PRINT);
+//        print_r($data);
+//
+//        $helper = new Helper();
+//        $helper->printUserInfo($email, $data, $output);
 
         return Command::SUCCESS;
     }

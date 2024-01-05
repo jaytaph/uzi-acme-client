@@ -26,7 +26,8 @@ class NonceNewCommand extends AcmeCommand {
         $acme = Client::createFromInput($input);
         $nonce = $acme->getNonce();
 
-        $output->writeln("None: <comment>$nonce</comment>");
+//        $output->writeln("None: <comment>$nonce</comment>");
+        print json_encode(['nonce' => $nonce], JSON_PRETTY_PRINT);
 
         return Command::SUCCESS;
     }
